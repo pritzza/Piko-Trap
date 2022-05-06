@@ -6,20 +6,19 @@
 struct Sprite
 {
 public:
-	//sf::Sprite sprite;
-	sf::RectangleShape sfSprite;
-	sf::Vector2f pos;
+	sf::Sprite sfSprite;
+	sf::RectangleShape spriteBorder;
+
 	bool flipHorizontally{ false };
 	bool flipVertically{ false };
 
-	// animation stuff too
+	// TODO: animation stuff too
 
-	void init(const sf::Vector2f& pos);	//todo take in SpriteID to get texture n stuff
+	void init(const sf::Vector2f& pos = { 0, 0 });	//todo take in SpriteID to get texture n stuff
 
-	void update();
+	void update(const sf::Vector2f& pos);
 
-	void setPos(const sf::Vector2f& pos)	{ this->pos = pos;	}
-	const sf::Vector2f& getPos() const		{ return this->pos; }
+	const sf::Sprite& getSprite() const				{ return this->sfSprite;	 }
+	const sf::RectangleShape& getBorder() const		{ return this->spriteBorder; }
 
-	const sf::RectangleShape& getSprite() const { return this->sfSprite; }
 };

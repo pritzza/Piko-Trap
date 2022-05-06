@@ -2,11 +2,6 @@
 
 #include "GameState.h"
 
-#include <SFML/Graphics.hpp>
-
-#include "../entity/Entity.h"
-#include "../level/Level.h"
-
 class GameStateTitle : public GameState
 {
 private:

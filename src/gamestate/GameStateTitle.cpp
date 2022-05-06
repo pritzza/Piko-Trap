@@ -1,5 +1,7 @@
 #include "GameStateTitle.h"
 
+#include <SFML/Window/Keyboard.hpp>
+
 #include <iostream>
 
 #include "../Game.h"

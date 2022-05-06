@@ -1,7 +1,13 @@
 #include "GameStateLevelEditor.h"
 
+#include <SFML/Window/Keyboard.hpp>
+
 #include <iostream>
 
+#include "GameStateMachine.h"
+#include "../event/EventBus.h"
+
+// TODO replace include game.h with only headers we need
 #include "../Game.h"
 
 void GameStateLevelEditor::load()

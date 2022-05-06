@@ -3,7 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-Window::Window(const uint16_t width, const uint16_t height, const std::string& name, const int style)
+Window::Window(const int width, const int height, const std::string& name, const int style)
     :
     window{ sf::VideoMode(width, height), name, sf::Style::Default | sf::Style::Resize },
     width{ width },

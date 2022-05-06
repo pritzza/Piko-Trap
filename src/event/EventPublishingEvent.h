@@ -1,8 +1,10 @@
 #pragma once
 
-#include "EventBus.h"
+#include "Event.h"
 
-struct EventPublishingEvent : Event
+class EventBus;
+
+struct EventPublishingEvent : public Event
 {
 protected:
 	const EventBus& bus;	// stores a reference to the event bus

@@ -1,15 +1,18 @@
 #include "Entity.h"
 
-void Entity::init(const AABB& aabb)
-{
-	this->pos = sf::Vector2f( aabb.x, aabb.y );
+#include "../gfx/Sprite/SpriteID.h"
 
-	this->initSprite(aabb);
+void Entity::init(const sf::Vector2f& pos, const SpriteID spriteID, const AABB& aabb)
+{
+	this->pos = pos;
+
+	this->initSprite(spriteID);
 	this->initAABB(aabb);
 }
 
-void Entity::initSprite(const AABB& aabb)
+void Entity::initSprite(const SpriteID spriteid)
 {
+	//this->sprite = s;
 	this->sprite.init(this->pos);
 }
 
@@ -31,8 +34,7 @@ void Entity::update(const float dt)
 	this->aabb.y = this->pos.y;
 
 	// sprite/graphics
-	this->sprite.setPos(this->pos);
-	this->sprite.update();
+	this->sprite.update(this->pos);
 
 	this->aabbRect.setPosition(this->pos);
 }

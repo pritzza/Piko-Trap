@@ -7,12 +7,18 @@
 #include "../event/EntityCollisionEvent.h"
 #include "../event/GameStateMachineOperationEvent.h"
 
+#include "../gfx/sprite/SpriteID.h"
+
+#include <SFML/Window/Keyboard.hpp>
+
 void GameStatePlatform::load()
 {
 	std::cout << "platform load\n";
-
-	p1.init(AABB{ 100, 100, 100, 100 });
-	p2.init(AABB{ 100, 100, 100, 100 });
+	const AABB testCollider{ 0, 0, 100, 100 };
+	const sf::Vector2f p1Pos{ 100, 100 };
+	const sf::Vector2f p2Pos{ 300, 200 };
+	p1.init(p1Pos, SpriteID::Test, testCollider);
+	p2.init(p2Pos, SpriteID::Test, testCollider);
 
 	level.load(20, 10);
 }
@@ -57,7 +63,7 @@ void GameStatePlatform::handleInput()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 	{
-		if (gsm.isLoaded(GameStateID::Platform))
+		if (gsm.isLoaded(GameStateID::Platform) == false)
 		{
 			GameStateMachineOperationEvent addState{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::Platform) };
 			bus.publish(&addState);
@@ -67,7 +73,7 @@ void GameStatePlatform::handleInput()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
 	{
-		if (gsm.isLoaded(GameStateID::LevelEditor))
+		if (gsm.isLoaded(GameStateID::Title) == false)
 		{
 			GameStateMachineOperationEvent addState{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::Title) };
 			bus.publish(&addState);
@@ -77,7 +83,7 @@ void GameStatePlatform::handleInput()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
 	{
-		if (gsm.isLoaded(GameStateID::LevelEditor))
+		if (gsm.isLoaded(GameStateID::LevelEditor) == false)
 		{
 			GameStateMachineOperationEvent addState{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::LevelEditor) };
 			bus.publish(&addState);
