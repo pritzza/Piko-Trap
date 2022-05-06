@@ -1,9 +1,9 @@
-#include "DeltaTime.h"
+#include "Timer.h"
 
 #include <iostream>
 
 // genious fella here: https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/
-void DeltaTime::preciseSleep(double seconds)
+void Timer::preciseSleep(double seconds)
 {
 	using namespace std;
 	using namespace std::chrono;
@@ -34,21 +34,19 @@ void DeltaTime::preciseSleep(double seconds)
 	while ((high_resolution_clock::now() - start).count() / 1e9 < seconds);
 }
 
-void DeltaTime::wait()
+void Timer::wait(const unsigned int targetFPS)
 {
-	static constexpr bool PRINT_DEBUG_TEXT{ false };
-
-	constexpr double NANO{ 1.0 / 1'000'000'000 };
-
-	constexpr int TARGET_FPS{ 60 };
-	constexpr long long TARGET_FRAME_DURATION{ static_cast<long long>(1.f / TARGET_FPS / NANO) }; // in nanoseconds
+	long long targetFrameDuration{ static_cast<long long>(1.f / targetFPS / NANO) }; // in nanoseconds
 
 	// processing time is how long it takes to execute the program loop once
 	const std::chrono::nanoseconds ptDuration{ clock.now() - this->lastFrameStart };
 	const long long pt{ ptDuration.count() };
 
-	const std::chrono::nanoseconds sleepTime{ std::chrono::nanoseconds(TARGET_FRAME_DURATION) - ptDuration };
-	if (sleepTime.count() > 0)
+	const std::chrono::nanoseconds sleepTime{ std::chrono::nanoseconds(targetFrameDuration) - ptDuration };
+
+	static constexpr int ESTIMATED_SLEEP_RUNTIME{ 10'000 }; // how long I think a call to preciseSleep takes in NS
+
+	if (sleepTime.count() > 10,000)
 		preciseSleep(sleepTime.count() * NANO);
 
 	const std::chrono::nanoseconds dtDuration{ clock.now() - this->lastFrameStart };
@@ -61,8 +59,7 @@ void DeltaTime::wait()
 	this->lastFrameStart = clock.now();
 
 	if constexpr (PRINT_DEBUG_TEXT)
-		std::cout << "pt: " << pt * NANO << " dt: " << dt * NANO << " deviation:" << dt - TARGET_FRAME_DURATION << '\n';
+		std::cout << "pt: " << pt * NANO << " dt: " << dt * NANO << " deviation:" << dt - targetFrameDuration << '\n';
 
 	this->totalSecondsElapsed += dt * NANO;
-	this->totalNanosecondsElapsed += dt;
 }

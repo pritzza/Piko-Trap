@@ -5,16 +5,16 @@
 #include "event/GameStateMachineOperationEvent.h"
 
 Game::Game(
-	const uint16_t width,
-	const uint16_t height,
-	const uint8_t frameRate,
+	const int width,
+	const int height,
+	const unsigned frameRate,
 	const std::string& name,
 	const int windowStyle)
 	:
-	data{ gameStateMachine, eventBus, physicsHandler, window, renderer, dt, this->frameRate, isRunning },
+	data{ gameStateMachine, eventBus, physicsHandler, window, renderer, timer, this->targetFrameRate, isRunning },
 	window{ width, height, name, windowStyle },
 	renderer{ window },
-	frameRate{ frameRate },
+	targetFrameRate{ frameRate },
 	isRunning{ false }
 {}
 
@@ -32,22 +32,22 @@ void Game::loop()
 	GameStateMachineOperationEvent addStartingState{ { GameStateMachineOperationType::AddState, GameStateID::Platform } };
 	GameStateMachineOperationEvent changeToStartingState{ { GameStateMachineOperationType::ChangeCurrentState, GameStateID::Platform} };
 
-	eventBus.publish(&addStartingState);
-	eventBus.publish(&changeToStartingState);
+	this->eventBus.publish(&addStartingState);
+	this->eventBus.publish(&changeToStartingState);
 
 	this->gameStateMachine.processChanges();
 
 	// gameloop
 	while (this->isRunning)
 	{
-		this->dt.wait();
+		this->timer.wait(this->targetFrameRate);
 
 		this->gameStateMachine.processChanges();
 
 		this->window.update();
 
 		this->gameStateMachine.getCurrentState().handleInput();
-		this->gameStateMachine.getCurrentState().update(dt.getDT());
+		this->gameStateMachine.getCurrentState().update(this->timer.getDeltaTime());
 		this->gameStateMachine.getCurrentState().render();
 	}
 }

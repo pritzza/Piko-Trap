@@ -14,8 +14,8 @@ class Window
 private:
 	sf::RenderWindow window;
 
-	const uint16_t width;
-	const uint16_t height;
+	const int width;
+	const int height;
 
 	bool focused{ true };
 
@@ -29,12 +29,12 @@ private:
 	void draw(const sf::Drawable& sprite);
 
 public:
-	Window(const uint16_t width, const uint16_t height, const std::string& name, const int style);
+	Window(const int width, const int height, const std::string& name, const int style);
 
 	void update();
 
-	inline const uint16_t getWidth() const				{ return this->width;			}
-	inline const uint16_t getHeight() const				{ return this->height;			}
+	inline const int getWidth() const				{ return this->width;			}
+	inline const int getHeight() const				{ return this->height;			}
 	inline const sf::RenderWindow& getWindow() const	{ return this->window;			}
 
 	inline const bool isFocused() const					{ return this->focused;			}

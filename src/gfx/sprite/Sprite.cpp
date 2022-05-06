@@ -2,14 +2,22 @@
 
 void Sprite::init(const sf::Vector2f& pos)
 {
-	this->pos = pos;
-	this->sfSprite.setSize(sf::Vector2f{100, 100});
-	this->sfSprite.setFillColor(sf::Color{ 255, 129, 0 });
+	// sprite border will have the same size as the sprite
+	const sf::IntRect& r{ this->sfSprite.getTextureRect() };
+	const sf::Vector2f spriteSize( r.width - r.left, r.height - r.top );
 
-	update();
+	this->spriteBorder.setSize(spriteSize);
+	this->spriteBorder.setSize(sf::Vector2f{100,100});	// TODO remove
+
+	this->spriteBorder.setFillColor(sf::Color::Transparent);
+	this->spriteBorder.setOutlineColor(sf::Color{ 0, 0, 0 });
+	this->spriteBorder.setOutlineThickness(1.f);
+
+	this->update(pos);
 }
 
-void Sprite::update()
+void Sprite::update(const sf::Vector2f& pos)
 {
-	this->sfSprite.setPosition(this->pos);
+	this->sfSprite.setPosition(pos);
+	this->spriteBorder.setPosition(pos);
 }

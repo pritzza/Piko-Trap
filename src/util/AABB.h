@@ -1,18 +1,8 @@
 #pragma once
 
-#include <cstdint>
-
 struct AABB
 {
 	int x, y, w, h;
-
-	constexpr AABB()
-		:
-		x{ 0 },
-		y{ 0 },
-		w{ 8 },
-		h{ 8 }
-	{}
 
 	constexpr AABB(const int x, const int y, const int w, const int h)
 		:
@@ -41,11 +31,10 @@ struct AABB
 	inline static constexpr bool isPointInside
 	(
 		const int px, const int py,
-		const int sx, const int sy,
-		const int ex, const int ey
+		AABB aabb
 	)
 	{
-		return px >= sx && px <= sx + ex &&
-			   py >= sy && py <= sy + ey;
+		return px >= aabb.x && px <= aabb.x + aabb.w &&
+			   py >= aabb.y && py <= aabb.y + aabb.h;
 	}
 };

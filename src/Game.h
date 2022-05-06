@@ -1,34 +1,14 @@
 #pragma once
 
-#include <SFML/Window/WindowStyle.hpp>
-
 #include "gfx/Renderer.h"
-
 #include "util/Window.h"
-#include "util/DeltaTime.h"
+
 #include "gamestate/GameStateMachine.h"
-
 #include "event/EventBus.h"
-
 #include "physics/PhysicsHandler.h"
+#include "util/Timer.h"
 
-struct GameData
-{
-	GameStateMachine& gameStateMachine;
-
-	EventBus& eventBus;
-
-	PhysicsHandler& physicsHandler;
-
-	Window& window;
-	Renderer& renderer;
-
-	DeltaTime& dt;
-
-	uint8_t& frameRate;
-
-	bool& isRunning;
-};
+#include "GameData.h"
 
 class Game
 {
@@ -44,9 +24,9 @@ private:
 	Window window;
 	Renderer renderer;
 
-	DeltaTime dt;
+	Timer timer;
 
-	uint8_t frameRate;	// TODO make delta time actually use this FPS var
+	unsigned targetFrameRate;	// TODO make delta time actually use this FPS var
 	bool isRunning;
 
 private:
@@ -56,9 +36,9 @@ private:
 
 public:
 	Game(
-		const uint16_t width,
-		const uint16_t height,
-		const uint8_t frameRate,
+		const int width,
+		const int height,
+		const unsigned frameRate,
 		const std::string& name,
 		const int windowStyle
 	);

@@ -11,7 +11,7 @@ void Level::load(int width, int height)
 
 	for (int i = 0; i < size; ++i)
 	{
-		if (i%2)
+		if (i%3)
 			tiles[i] = Tile::Air;
 		else
 			tiles[i] = Tile::Solid;
