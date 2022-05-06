@@ -61,22 +61,25 @@ and that I need to think of a better solution.
 so I got to work on designing and writing a small level class- just a 2D array of tiles (enum class).
 For some reason though I couldn't get the level's tiles to render correctly so I gave up.
 
-Development Day 3 (est 2 hours) [5-6-21]:
+Development Day 3 (est 2 hours) [5-5-21]:
 	Had some time and motivation to come back and try to clean up the mess I made before. I went
 through and tried to clean up the file dependencies. I refactored the DeltaTime class into Timer,
-<<<<<<< HEAD
 cleaned up some code here and there and reviewed my design decisions. I reworked Sprite to try
 to make it simpler; Now instead of storing its own position, the SFML sprite's position is that
 of what should be the Entity's position, passed in through Entity::update(Vec2f pos). I made this
 decision to try to simplify the code, making the Entity class more responsible and in control of
 what it decides to do with its sprite. Also while reworking/refactoring Sprite I fixed a bug 
 that now has the level being rendered properly.
-=======
-cleaned up some code here and there and reviewed my design decisions. I think I may rework Entity
-so it stores its own position, but the position attribute of Sprite and AABB will be offsets or
-displacements from the Entity's actual position. Eg: entity has pos (10,10), if sprite's pos it (1,-1),
-then the sprite will be drawn at (11,9).
->>>>>>> master
 	I really need to figure out a way to prevent dependency hell with EventBus though, becuase
 events can do anything, they could require any header, including EventBus. To have to #include
 every event in EventBus could just be awful.
+
+Development Day 3 (est 2 hours) [5-6-21]:
+	Today I wanted to work on the EventBus's implementation. As it stands, there are two versions,
+the original implementation by Niko Savas, and a slightly modified version that uses vectors instead
+of linked lists. The difference in implementation here is trivial, yet for some reason I really want
+my alteration of Niko Savas' implementation to work really badly, so I've been working on that. If I
+try to use my alteration as it stands right now, I get some insane crash upon the second call of
+GameState::handleInput(). I have no idea what it is, I want to say some sort of UB, but it is replicable
+so maybe not. Took about 30 minutes of me reimplementing my changes from Savas' code to discover the error
+only occurs when I use an std::unordered_map instead of std::map. 
