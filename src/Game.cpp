@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "event/GameStateMachineOperationEvent.h"
+#include "event/EntityCollisionEvent.h"
 
 Game::Game(
 	const int width,
@@ -14,8 +15,7 @@ Game::Game(
 	data{ gameStateMachine, eventBus, physicsHandler, window, renderer, timer, this->targetFrameRate, isRunning },
 	window{ width, height, name, windowStyle },
 	renderer{ window },
-	targetFrameRate{ frameRate },
-	isRunning{ false }
+	targetFrameRate{ frameRate }
 {}
 
 void Game::loop()
@@ -24,8 +24,8 @@ void Game::loop()
 
 	// set up event subscribers
 
-	this->eventBus.subscribe(&physicsHandler, &PhysicsHandler::handleEntityCollision);
 	this->eventBus.subscribe(&this->gameStateMachine, &GameStateMachine::handleOperationEvent);
+	this->eventBus.subscribe(&this->physicsHandler, &PhysicsHandler::handleEntityCollision);
 
 	// set up initial gamestate
 

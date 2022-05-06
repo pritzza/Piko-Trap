@@ -74,7 +74,7 @@ that now has the level being rendered properly.
 events can do anything, they could require any header, including EventBus. To have to #include
 every event in EventBus could just be awful.
 
-Development Day 3 (est 2 hours) [5-6-21]:
+Development Day 3 (est 4 hours) [5-6-21]:
 	Today I wanted to work on the EventBus's implementation. As it stands, there are two versions,
 the original implementation by Niko Savas, and a slightly modified version that uses vectors instead
 of linked lists. The difference in implementation here is trivial, yet for some reason I really want
@@ -82,4 +82,9 @@ my alteration of Niko Savas' implementation to work really badly, so I've been w
 try to use my alteration as it stands right now, I get some insane crash upon the second call of
 GameState::handleInput(). I have no idea what it is, I want to say some sort of UB, but it is replicable
 so maybe not. Took about 30 minutes of me reimplementing my changes from Savas' code to discover the error
-only occurs when I use an std::unordered_map instead of std::map. 
+only occurs when I use an std::unordered_map instead of std::map.
+	Another hour or two of headache envolving EventBus where I rewrote my implementation of it a second
+time just to realize the bug I was hunting didn't have to do with EventBus. I was trying stuff out and 
+realized that I could get EventBus to work without #including ever single event file. Infact it can work
+without forward declaring anything??? I have no idea how, but it looks like I only need to #include all the
+events in Game.cpp where the EventBus subscribes all the game systems to the events they care about!

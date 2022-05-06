@@ -27,7 +27,7 @@ private:
 	Timer timer;
 
 	unsigned targetFrameRate;	// TODO make delta time actually use this FPS var
-	bool isRunning;
+	bool isRunning{ false };
 
 private:
 	void loop();

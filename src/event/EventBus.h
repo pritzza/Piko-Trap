@@ -4,12 +4,6 @@
 #include <typeindex>
 #include <vector>
 
-#ifndef ALL_EVENT_TYPES
-#define ALL_EVENT_TYPES
-#include "EntityCollisionEvent.h"
-#include "GameStateMachineOperationEvent.h"
-#endif
-
 // Source:
 // https://medium.com/@savas/nomad-game-engine-part-7-the-event-system-45a809ccb68f
 // ^ this guy is a genius

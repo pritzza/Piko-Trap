@@ -21,6 +21,15 @@ void GameStatePlatform::load()
 	p2.init(p2Pos, SpriteID::Test, testCollider);
 
 	level.load(20, 10);
+	
+	// event bus debugging
+	GameStateMachine& gsm{ this->data.gameStateMachine };
+	EventBus bus{ this->data.eventBus };
+
+	GameStateMachineOperationEvent addState1{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::Title) };
+	bus.publish(&addState1);
+	GameStateMachineOperationEvent addState2{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::LevelEditor) };
+	bus.publish(&addState2);
 }
 
 void GameStatePlatform::unload()
@@ -61,33 +70,13 @@ void GameStatePlatform::handleInput()
 	GameStateMachine& gsm{ this->data.gameStateMachine };
 	EventBus bus{ this->data.eventBus };
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-	{
-		if (gsm.isLoaded(GameStateID::Platform) == false)
-		{
-			GameStateMachineOperationEvent addState{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::Platform) };
-			bus.publish(&addState);
-		}
-		GameStateMachineOperationEvent changeState{ GameStateMachineOperation(GameStateMachineOperationType::ChangeCurrentState, GameStateID::Platform) };
-		bus.publish(&changeState);
-	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
 	{
-		if (gsm.isLoaded(GameStateID::Title) == false)
-		{
-			GameStateMachineOperationEvent addState{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::Title) };
-			bus.publish(&addState);
-		}
 		GameStateMachineOperationEvent changeState{ GameStateMachineOperation(GameStateMachineOperationType::ChangeCurrentState, GameStateID::Title) };
 		bus.publish(&changeState);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
 	{
-		if (gsm.isLoaded(GameStateID::LevelEditor) == false)
-		{
-			GameStateMachineOperationEvent addState{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::LevelEditor) };
-			bus.publish(&addState);
-		}
 		GameStateMachineOperationEvent changeState{ GameStateMachineOperation(GameStateMachineOperationType::ChangeCurrentState, GameStateID::LevelEditor) };
 		bus.publish(&changeState);
 	}
