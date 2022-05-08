@@ -88,3 +88,49 @@ time just to realize the bug I was hunting didn't have to do with EventBus. I wa
 realized that I could get EventBus to work without #including ever single event file. Infact it can work
 without forward declaring anything??? I have no idea how, but it looks like I only need to #include all the
 events in Game.cpp where the EventBus subscribes all the game systems to the events they care about!
+	Now I am struck with the design decision of how to handle Tile sprites. I think it is okay for each
+Entity to store its own sprite, but for each Tile to store its own sprite might cost alot of unnecessary
+memory. The alternative of each Tile storing its sprite in my mind is Tiles not storing their own sprite,
+but having the Renderer create either one Sprite object and draw it many times, changing its tile texture
+when necessary, or having one Sprite object per tile texture, kinda like VAOs in OpenGL. There is a
+performance trade off in this aproach however, as if I am creating 1 Sprite per Renderer::render(level)
+call, that isn't great. If I am creating one Sprite per Tile type/Tile texture, thats worse.
+Maybe just for tiles I will have the Renderer store a vector of all Tile sprites with unique textures.
+That way im not wasting any much memory by having tiles store their own sprites, and not wasting
+much performance by constructing one or more Sprite objects per render level call.
+	Now that I am working with sprites and textures, I need to create a resource manager.
+Off the top of my head, I could always have every resource loaded, this might be fine if I have lots
+of memory or I know that my resources are going to be smaller in size. The alternative is loading
+and unloading resources as I need/use them. Loading/unloading takes time, but means I'll only
+ever have resources in memory that I am using (no wasted memory). Honestly for this game, the former
+works as the sum of all resources should never exceed ~100MB (ball park guess). However,
+I would like to write some code that I can reuse for other projects and is more scaleable,
+so I will try to implement the ladder. I've seen an approach of a hashmap of smart pointers
+to track how many instances of a resource are being used, so I'll just go with that.
+
+Development Day 4 (est 1 hours) [5-7-21]:
+	I spent some time planning out a resource manager. I figured the resource
+manager should be responsible for supplying resources, as well as loading an unloading
+them from memory when appropriate. I really love strict types and enum classes, so
+I thought I would store all of the resources being managed in one of my EnumArrays.
+This would provide O(1) retrival to the finite set of resources. Say you have a grass
+texture, your would have a corresponding enum class ID TextureID::Grass which you
+would supply to the resource manager, and it would return to you the resource for grass.
+Notice how in this system, the notion of file paths is abstracted. This begs the question
+though of who has the paths to all the files. I thought maybe the resources could
+statically store the paths corresponding to their IDs, but that design would take away
+the power of a resource manager and over complicate/be out of scope of the job of
+a resource. So I think instead it makes the most sense for the resouce managers
+map not only the resources to IDs, but also the resources paths. I still think it
+makes sense for the resource to get the file path from its corresponding resource
+manager. Except without needing a dependence on it (resource also shouldn't know
+about the existance of a resource manager) however for the sake of getting the path
+of resources, I think its okay for the implementation of a resource to access
+a static member of a resource manager with the paths of resources. Here is a mock up
+of what I am thinking:
+https://cdn.discordapp.com/attachments/969717851936157782/972621268786507786/IMG_1177.jpg
+I am a little unhappy with how many template types are flying around and also am
+wondering if there is any semantical reason for Resource to be an abstract class.
+	I implemented Resource but without the ResourceType template, instead opting
+for Resource subclasses to implement their own "get()" method what will return the
+type of their resource. Took maybe 30 minutes to implement.

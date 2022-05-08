@@ -5,6 +5,8 @@
 #include "event/GameStateMachineOperationEvent.h"
 #include "event/EntityCollisionEvent.h"
 
+#include "resourcemanager/TextureResource.h"
+
 Game::Game(
 	const int width,
 	const int height,
@@ -36,6 +38,11 @@ void Game::loop()
 	this->eventBus.publish(&changeToStartingState);
 
 	this->gameStateMachine.processChanges();
+
+	TextureResource t;
+	//t.load(TextureID::Test);
+	t.get();
+	t.unload();
 
 	// gameloop
 	while (this->isRunning)
