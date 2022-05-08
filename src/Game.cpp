@@ -39,8 +39,9 @@ void Game::loop()
 
 	this->gameStateMachine.processChanges();
 
+	// Texture Resource test
 	TextureResource t;
-	//t.load(TextureID::Test);
+	t.load(TextureID::Test);
 	t.get();
 	t.unload();
 

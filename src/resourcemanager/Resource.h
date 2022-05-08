@@ -7,9 +7,14 @@ protected:
 	bool m_isLoaded{ false };
 
 public:
-	Resource() = default;
-	virtual Resource(const ID id) = 0;
-	virtual ~Resource() = 0;
+	
+	// Recommendation:
+	// Write RAII ctors and dtor 
+	/*
+	ResourceChild() = default;
+	ResourceChild(ID id)	{ load(id); }
+	~ResourceChild()		{ unload(); }
+	*/
 
 	virtual void load(const ID id) = 0;
 	virtual void unload() = 0;

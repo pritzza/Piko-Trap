@@ -133,4 +133,9 @@ I am a little unhappy with how many template types are flying around and also am
 wondering if there is any semantical reason for Resource to be an abstract class.
 	I implemented Resource but without the ResourceType template, instead opting
 for Resource subclasses to implement their own "get()" method what will return the
-type of their resource. Took maybe 30 minutes to implement.
+type of their resource. Took maybe 30 minutes to implement. Not totally happy with
+current implementation as there will be a good amount of duplicate code between
+Resource subclasses.
+
+Development Day 5 (est 1 hours) [5-8-21]:
+	Happy Mother's Day! Gonna try to implement ResourceManager class now.

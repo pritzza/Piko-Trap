@@ -2,10 +2,9 @@
 
 #include "Resource.h"
 #include "TextureID.h"
+
 #include <SFML/Graphics/Texture.hpp>
 #include <cassert>
-
-#include <iostream>
 
 class TextureResource : public Resource<TextureID>
 {
@@ -14,14 +13,8 @@ private:
 
 public:
 	TextureResource() = default;
-	TextureResource(const TextureID id)
-	{
-		load(id);
-	}
-	~TextureResource() override
-	{
-		unload();
-	}
+	TextureResource(const TextureID id)	{ load(id); }
+	~TextureResource()					{ unload(); }
 
 	void load(const TextureID id) override 
 	{
@@ -30,11 +23,13 @@ public:
 		if (this->m_isLoaded == false && resource == nullptr)
 		{
 			resource = new sf::Texture();
-			std::cout << "new\n";
 			this->m_isLoaded = true;
 
+			static const std::string RESOURCES_PATH{ "res/" };
+			const std::string filePath{ RESOURCES_PATH + "untitled.png" };
+
 			// if the file doesnt sucessfully load, unload the resource
-			if (resource->loadFromFile("C:/Users/Jonat/Documents/Programming/VS C++/Piko Trap/res/untitled.png") == false)
+			if (resource->loadFromFile(filePath) == false)
 				unload();
 		}
 	}
@@ -46,16 +41,17 @@ public:
 		if (this->m_isLoaded)
 		{
 			delete resource;
-			std::cout << "delete\n";
 			resource = nullptr;
 		}
 	}
 
 	sf::Texture& get()
 	{
-		//assert(resource != nullptr);
+		assert(resource != nullptr);
 
 		if (resource != nullptr)
 			return *resource;
+
+		// if resource is anything but valid, we want the program to crash
 	}
 };
