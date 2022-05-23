@@ -2,7 +2,6 @@
 
 #include <array>
 #include <cassert>
-#include <iostream>
 
 template<typename ID, typename VAL>
 class EnumArray
@@ -13,30 +12,30 @@ private:
     std::array<IdValPair, static_cast<int>(ID::SIZE)> arr;
 
 public:
-    constexpr EnumArray(const std::initializer_list<IdValPair>& il)
+
+    EnumArray(const std::initializer_list<IdValPair>& il)
     {
         for (int i = 0; i < this->arr.size(); ++i)
         {
             const auto& it{ il.begin() };
             const IdValPair pair{ *(it + i) };
-
+    
             const bool IDsOrdered{ pair.first == static_cast<ID>(i) };
-
+    
             assert(IDsOrdered);
-
-            arr[i] = pair;
+    
+            this->arr[i] = pair;
         }
     }
 
-    constexpr VAL& getVal(const ID id)
+    VAL& getVal(const ID id)
     {
         const int index{ static_cast<int>(id) };
-
         return this->arr[index].second;
     }
 
     // warning: VAL needs operator== to use
-    constexpr ID getID(const VAL& val)
+    ID getID(const VAL& val)
     {
         for (auto [id, value] : this->arr)
         {
@@ -49,10 +48,11 @@ public:
         assert(true);
         return ID::SIZE;
     }
-
 };
 
 /* Usage example:
+
+#include <iostream>
 
 enum class FooID
 {
@@ -80,8 +80,8 @@ int main()
     constexpr Foo FOO2{ 20, 21 };
 
     EnumArray<FooID, Foo> foos{
-        {FooID::a, FOO1}
-        {FooID::b, FOO2},
+        {FooID::a, FOO1},
+        {FooID::b, FOO2}
     };
 
     foos.getID(FOO1); // only works if operator== exists

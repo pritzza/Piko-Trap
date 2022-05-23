@@ -6,6 +6,7 @@
 #include "event/EntityCollisionEvent.h"
 
 #include "resourcemanager/TextureResource.h"
+#include "resourcemanager/ResourceManager.h"
 
 Game::Game(
 	const int width,
@@ -31,8 +32,15 @@ void Game::loop()
 
 	// set up initial gamestate
 
-	GameStateMachineOperationEvent addStartingState{ { GameStateMachineOperationType::AddState, GameStateID::Platform } };
-	GameStateMachineOperationEvent changeToStartingState{ { GameStateMachineOperationType::ChangeCurrentState, GameStateID::Platform} };
+	GameStateMachineOperationEvent addStartingState
+	{ 
+		GameStateMachineOperation{ GameStateMachineOperationType::AddState, GameStateID::Platform } 
+	};
+
+	GameStateMachineOperationEvent changeToStartingState
+	{ 
+		GameStateMachineOperation{ GameStateMachineOperationType::ChangeCurrentState, GameStateID::Platform }
+	};
 
 	this->eventBus.publish(&addStartingState);
 	this->eventBus.publish(&changeToStartingState);
@@ -41,9 +49,14 @@ void Game::loop()
 
 	// Texture Resource test
 	TextureResource t;
-	t.load(TextureID::Test);
+	t.load("res/untitled.png");
 	t.get();
 	t.unload();
+
+	// TODO write unit tests
+	ResourceManager textureManager;
+	//textureManager.get(TextureID::Test1);
+	//textureManager.unload(TextureID::Test1);
 
 	// gameloop
 	while (this->isRunning)
@@ -52,6 +65,7 @@ void Game::loop()
 
 		this->gameStateMachine.processChanges();
 
+		// TODO make game stop when window is closed
 		this->window.update();
 
 		this->gameStateMachine.getCurrentState().handleInput();

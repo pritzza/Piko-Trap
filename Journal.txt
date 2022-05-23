@@ -7,7 +7,7 @@ well defined and relativley small. We were thinking of having the game be local 
 we wanted our game to have a couple of the puzzle mechanics from Piko Park and maybe 5
 screens/levels (spoiler doesn't happen).
 
-Development Day 1 (est 6 hours) [4-29-21]:
+Development Day 1 (est 6 hours) [4-29-22]:
 	I started off by copy pasting the code from my Microcraft Rat game. I stripped out
 and replace all of the outdated/extrenuous files like "Spritesheet"- files that didn't
 make to exist in the scope of this project, or files that are old and I wanted to be
@@ -23,7 +23,7 @@ data typed declearation vs definition which I still dont understand, but the err
 nothing about that. I am upset because I end the night having development I was hoping to
 get a level editor working and spend the next day designing levels, but NOPE.
 
-Development Day 2 (est 4 hours) [4-30-21]:
+Development Day 2 (est 4 hours) [4-30-22]:
 	I get the EventBus and Event mostly set up and almost working. I realize that I want
 to use the EventBus working for all types of events from high to low level, from user input
 to an in-game-event to an event causing an event (don't know if that made sense). Going with
@@ -61,7 +61,7 @@ and that I need to think of a better solution.
 so I got to work on designing and writing a small level class- just a 2D array of tiles (enum class).
 For some reason though I couldn't get the level's tiles to render correctly so I gave up.
 
-Development Day 3 (est 2 hours) [5-5-21]:
+Development Day 3 (est 2 hours) [5-5-22]:
 	Had some time and motivation to come back and try to clean up the mess I made before. I went
 through and tried to clean up the file dependencies. I refactored the DeltaTime class into Timer,
 cleaned up some code here and there and reviewed my design decisions. I reworked Sprite to try
@@ -74,7 +74,7 @@ that now has the level being rendered properly.
 events can do anything, they could require any header, including EventBus. To have to #include
 every event in EventBus could just be awful.
 
-Development Day 3 (est 4 hours) [5-6-21]:
+Development Day 3 (est 4 hours) [5-6-22]:
 	Today I wanted to work on the EventBus's implementation. As it stands, there are two versions,
 the original implementation by Niko Savas, and a slightly modified version that uses vectors instead
 of linked lists. The difference in implementation here is trivial, yet for some reason I really want
@@ -108,13 +108,13 @@ I would like to write some code that I can reuse for other projects and is more 
 so I will try to implement the ladder. I've seen an approach of a hashmap of smart pointers
 to track how many instances of a resource are being used, so I'll just go with that.
 
-Development Day 4 (est 1 hours) [5-7-21]:
+Development Day 4 (est 3 hours) [5-7-22]:
 	I spent some time planning out a resource manager. I figured the resource
 manager should be responsible for supplying resources, as well as loading an unloading
 them from memory when appropriate. I really love strict types and enum classes, so
 I thought I would store all of the resources being managed in one of my EnumArrays.
 This would provide O(1) retrival to the finite set of resources. Say you have a grass
-texture, your would have a corresponding enum class ID TextureID::Grass which you
+texture, you would have a corresponding enum class ID TextureID::Grass which you
 would supply to the resource manager, and it would return to you the resource for grass.
 Notice how in this system, the notion of file paths is abstracted. This begs the question
 though of who has the paths to all the files. I thought maybe the resources could
@@ -137,5 +137,30 @@ type of their resource. Took maybe 30 minutes to implement. Not totally happy wi
 current implementation as there will be a good amount of duplicate code between
 Resource subclasses.
 
-Development Day 5 (est 1 hours) [5-8-21]:
-	Happy Mother's Day! Gonna try to implement ResourceManager class now.
+Development Day 5 (est 1 hours) [5-8-22]:
+	Happy Mother's Day! Gonna try to implement ResourceManager class now. 
+The ResourceManager uses my EnumArrays, so I did a quick integration check to
+see if the code worked, and I saw that it didnt, so I went in and fixed it
+as well as made a teeny optimization/logic improvement.
+
+Development Day 6 (est 1 hours) [5-19-22]:
+	Woot! We finished our first year of college! Time to refamiliarize myself with 
+what I was doing here. I quickly read the 2 previous journals to get a feel of what I was
+thinking, and I mostly agree, but at the same time i see what I actually implemented was
+a little different. I gave the ManagedResource struct a member for storing the resources
+file path. I think this makes the most sense if the ManagedResource store a reference to
+its path so it can independantly load and unload itself, but still that it is okay for the
+ResourceManager to store the master set of resource paths and pass them to ManagedResources
+on construction. Going with this design though, I think the Resource class shouldnt have
+any template type for its ResourceID/ResourceIDType or anything. I think a resource should
+purely take a path and load/unload the data at that path. Following that, I think it makes
+the most sense for the ResourceManager to manage and abstract all of the Resource/ResourceID/
+enum stuff, so we can interface with it really easily and only in terms of ResourceIDs.
+
+Development Day 7 (est 2 hours) [5-20-22]:
+	Yesterday I began implementing the updated ManagedResource and ResourceManager class, but
+ran into and was stuck on some crazy template errors. Tried to work on it on the drive to
+Santa Barbra, but with little to no tangible progress or success.
+
+Development Day 7 (est 1 hours) [5-22-22]:
+	I'm deleting all of the code I have for the ResourceManager class and starting over.

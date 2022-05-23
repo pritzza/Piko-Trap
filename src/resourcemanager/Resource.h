@@ -1,6 +1,8 @@
 #pragma once
 
-template <typename ID>
+#include <string>
+#include <string_view>
+
 class Resource
 {
 protected:
@@ -12,10 +14,10 @@ public:
 	// Write RAII ctors and dtor 
 	/*
 	ResourceChild() = default;
-	ResourceChild(ID id)	{ load(id); }
-	~ResourceChild()		{ unload(); }
+	ResourceChild(const std::string_view& filePath)	{ load(filePath); }
+	~ResourceChild()								{ unload();		  }
 	*/
 
-	virtual void load(const ID id) = 0;
+	virtual void load(const std::string_view& filePath) = 0;
 	virtual void unload() = 0;
 };
