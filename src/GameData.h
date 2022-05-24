@@ -1,6 +1,8 @@
 #pragma once
 
 class GameStateMachine;
+class ResourceManager;
+
 class EventBus;
 class PhysicsHandler;
 class Window;
@@ -10,6 +12,8 @@ class Timer;
 struct GameData final
 {
 	GameStateMachine& gameStateMachine;
+
+	ResourceManager& textureManager;
 
 	EventBus& eventBus;
 

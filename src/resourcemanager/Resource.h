@@ -11,12 +11,9 @@ protected:
 public:
 	
 	// Recommendation:
-	// Write RAII ctors and dtor 
-	/*
-	ResourceChild() = default;
-	ResourceChild(const std::string_view& filePath)	{ load(filePath); }
-	~ResourceChild()								{ unload();		  }
-	*/
+	// Write dtor to free resources
+	// 
+	//~ResourceChild() { unload(); }
 
 	virtual void load(const std::string_view& filePath) = 0;
 	virtual void unload() = 0;

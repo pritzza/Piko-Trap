@@ -34,6 +34,7 @@ public:
 	void setVel(const sf::Vector2f vel) { this->vel = vel;		}
 	const sf::Vector2f& getVel() const	{ return this->vel;		}
 
+	Sprite& getSprite()					{ return this->sprite;  }
 	const Sprite& getSprite() const		{ return this->sprite;	}
 	const AABB& getAABB() const			{ return this->aabb;	}
 

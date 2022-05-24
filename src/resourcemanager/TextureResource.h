@@ -5,22 +5,21 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <cassert>
 
-#include <string_view>
-#include <string>
-
 class TextureResource : public Resource
 {
+private:
+	static constexpr bool SAFETY_CHECKS{ false };
+
 private:
 	sf::Texture* resource{ nullptr };
 
 public:
-	TextureResource() = default;
-	TextureResource(const std::string_view& filePath)	{ load(filePath); }
-	~TextureResource()									{ unload();		  }
+	~TextureResource()	{ unload(); }
 
 	void load(const std::string_view& filePath) override
 	{
-		assert(this->m_isLoaded == false && resource == nullptr);
+		if constexpr (SAFETY_CHECKS)
+			assert(this->m_isLoaded == false && resource == nullptr);
 
 		if (this->m_isLoaded == false && resource == nullptr)
 		{
@@ -35,7 +34,9 @@ public:
 
 	void unload() override
 	{
-		assert(this->m_isLoaded && resource != nullptr);
+		// this only exists because of the TODO on ResourceManager ctor's TODO
+		if constexpr (SAFETY_CHECKS)
+			assert(this->m_isLoaded && resource != nullptr);
 
 		if (this->m_isLoaded)
 		{

@@ -4,6 +4,7 @@
 #include "util/Window.h"
 
 #include "gamestate/GameStateMachine.h"
+#include "resourcemanager/ResourceManager.h"
 #include "event/EventBus.h"
 #include "physics/PhysicsHandler.h"
 #include "util/Timer.h"
@@ -16,6 +17,8 @@ private:
 	GameData data;
 
 	GameStateMachine gameStateMachine{ data };
+
+	ResourceManager textureManager;
 
 	EventBus eventBus;
 

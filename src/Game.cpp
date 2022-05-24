@@ -15,7 +15,8 @@ Game::Game(
 	const std::string& name,
 	const int windowStyle)
 	:
-	data{ gameStateMachine, eventBus, physicsHandler, window, renderer, timer, this->targetFrameRate, isRunning },
+	// TODO make this and the inner structure of Game/GameData more scaleable
+	data{ gameStateMachine, textureManager, eventBus, physicsHandler, window, renderer, timer, this->targetFrameRate, isRunning },
 	window{ width, height, name, windowStyle },
 	renderer{ window },
 	targetFrameRate{ frameRate }
@@ -53,10 +54,11 @@ void Game::loop()
 	t.get();
 	t.unload();
 
+	EnumArray<TextureID,int>::test();
+
 	// TODO write unit tests
-	ResourceManager textureManager;
-	//textureManager.get(TextureID::Test1);
-	//textureManager.unload(TextureID::Test1);
+	textureManager.get(TextureID::Test1);
+	textureManager.unload(TextureID::Test1);
 
 	// gameloop
 	while (this->isRunning)

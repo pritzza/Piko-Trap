@@ -21,3 +21,8 @@ void Sprite::update(const sf::Vector2f& pos)
 	this->sfSprite.setPosition(pos);
 	this->spriteBorder.setPosition(pos);
 }
+
+void Sprite::setTexture(const sf::Texture& texture)
+{
+	this->sfSprite.setTexture(texture);
+}

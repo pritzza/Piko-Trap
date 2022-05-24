@@ -164,3 +164,32 @@ Santa Barbra, but with little to no tangible progress or success.
 
 Development Day 7 (est 1 hours) [5-22-22]:
 	I'm deleting all of the code I have for the ResourceManager class and starting over.
+
+Development Day 8 (est 3 hour) [5-23-22]:
+	On our way back from Santa Barbra in the back of Miguels car I actually started rewriting
+ResourceManager. I figured out the bug was that I was doing a copy construction of an
+std::pair<x, y> where y was an object that didn't have a default constructor. This was going on
+in the ctor of the EnumArray constructor, and was a little annoying for its difficulty to find/
+understand. But I got it and all I had to do was change a varaible to a reference. Glad I only
+commented out the old code for the ResourceManager cause I think everything else worked.
+	Now I ran into the minutest of canundrums. Whether Resource should have a construtor that
+loads it or not. The worry here is that the ManagedResource tracks the number of loads and unloads
+or a resource. Should Resources's string constructor automatically load it, the ManagedResoure class
+can't account for that current, which might result in a memory leak. However there is a slight
+convenience in having a Resource be able to load itself upon construction. The argument here is
+the possibility of memory leak if code used wrong in exchange for a line of two of convenience.
+I think I'll have my code be safe but less convenient.
+	Sidenote/self TODO: I really need to ask someone where/why my code doesn't compile if 
+ManagedResource doesn't have a default constructor.
+	With the ResourceManager class working now, I need to expand it to be able to manage different
+types of resouces. I'm thinking of turning the ResourceManager into a template class and just
+running multiple instances of it, each one running "TextureResource", "AudioResource", etc. That
+will take a small refactor as currently my poorly named ResourceManager is hardcoded to have only
+TextureResources haha.
+	Additionally, with the design of the ResourceManager, it is now needed that resources are unloaded
+once they are done being used. This is the next design cross road I will have to overcome. Off the bat,
+I'm thinking I could have Sprites store what texture they own and unload that texture upon dtor, but
+that means either having all Sprites store a reference to the EventBus, or a reference to the
+ResourceManager, so either an event can be thrown, inevitably unloading the resouce at the end of its
+scope. But I'll have to see what the most simple, elegant, and modular design will be of what I can
+come up with.

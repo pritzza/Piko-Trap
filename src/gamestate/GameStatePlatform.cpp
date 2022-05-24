@@ -30,11 +30,19 @@ void GameStatePlatform::load()
 	bus.publish(&addState1);
 	GameStateMachineOperationEvent addState2{ GameStateMachineOperation(GameStateMachineOperationType::AddState, GameStateID::LevelEditor) };
 	bus.publish(&addState2);
+
+	// TODO TextureID::Test1 doesnt render correctly for some reason
+	p1.getSprite().setTexture(this->data.textureManager.get(TextureID::Test1));
+	p2.getSprite().setTexture(this->data.textureManager.get(TextureID::Test2));
 }
 
 void GameStatePlatform::unload()
 {
 	std::cout << "platform unload\n";
+
+	// TODO automate this
+	this->data.textureManager.unload(TextureID::Test1);
+	this->data.textureManager.unload(TextureID::Test2);
 }
 
 void GameStatePlatform::handleInput()

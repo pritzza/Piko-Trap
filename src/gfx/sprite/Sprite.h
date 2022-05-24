@@ -18,6 +18,8 @@ public:
 
 	void update(const sf::Vector2f& pos);
 
+	void setTexture(const sf::Texture& texture);
+
 	const sf::Sprite& getSprite() const				{ return this->sfSprite;	 }
 	const sf::RectangleShape& getBorder() const		{ return this->spriteBorder; }
 
