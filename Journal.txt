@@ -193,3 +193,42 @@ that means either having all Sprites store a reference to the EventBus, or a ref
 ResourceManager, so either an event can be thrown, inevitably unloading the resouce at the end of its
 scope. But I'll have to see what the most simple, elegant, and modular design will be of what I can
 come up with.
+
+Development Day 9 (est 3 hour) [5-30-22]:
+	The past several days have been spent thinking about the architecture of the game.
+I have been thinking alot about the Event Bus design pattern, singletons, and how to structure
+code so it is scaleable not doesnt turn into spagetti. I am still struggling quite a bit with
+this, but have atleast established a few things with myself. First is to try to avoid keyword
+static at all costs. Second is to try to come up with some set of rules or paradigm to follow
+to have an orderly structure for the entire program. On a piece of paper I have scribbled these
+notes: that every class in the code should fall into one of three categories. Those being:
+a system, data, or an event. A system is a class that manages/maintains some set of data. Data
+here can be a class or struct that stores information to represent something, which may have
+the ability to operate on itself. Finally an event is an Event subclass which contains a
+function for which data can use to communicate to any system (its own or not), and any system 
+can use to communicate with any other system. Any interactions outside of this, like a system 
+operating on its own data. Though difficult to enfore in the code itself, I think this mental
+model makes sense and have some structure to it.
+	Here is a little example of how I think this could work. Say you have an EntityManager
+system, and a SlimeEntityMob class. The SlimeEntityMob is data that has the ability to operate
+on itself (the slime can hop around, sleep, regen its hp, etc). However it doesn't have the
+ability to interact with any other data (other mobs, the player, the world) or systems by itself.
+Say though when a SlimeEntityMob dies, we want it to spawn two smaller SlimeEntityMobs. This
+would mean communicating with its parent system, the EntityManager, to add two new SlimeEntityMobs
+to its container of entities. SlimeEntityMobs, without having a reference to the EntityManager
+class or even knowing such a thing exists, has no way of doing this. This is where my ultimatum
+and events come in. The SlimeEntityMob needs a way to communicate with potentially all systems
+and potentially all datas. This could turn into an abbomination if every class stores reference/
+access to every other class. Anyways, our solution is that the SlimeEntityMob be given a
+reference to the EventBus, and from there we can create a SpawnEntityEvent event for the
+SlimeEntityMob to invoke. The scary thing here though is that by giving the SlimeEntityMob the
+EventBus, it can throw literally any event, whether it makes sense for it to have access to
+such a thing or not. This is the problem im faced with, and also how data can be returned
+through events. Because say the SlimeEntityMob needs to know the position of the nearest
+PlayerEntity. It would needs to throw an event to ask the EntityManager for this data,
+but how could the EntityManager return it to the slime. Actually I think you could just pass
+a pointer to a variable into the event arguments and the event could write the needed data
+to that address.
+	That was a bit of a tangent, but writing it out has helped me think through some of my issues
+here. I guess I'll try implementing things this way. I'll hand out EventBus references to
+everything that needs it.
